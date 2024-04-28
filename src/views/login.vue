@@ -3,7 +3,7 @@ import {User, Lock} from '@element-plus/icons-vue'
 import {ref} from "vue";
 
 // 控制注册与登录表单的显示，默认显示注册
-const isRegister = ref(true)
+const isRegister = ref(false)
 
 const registerData = ref({
   username: '',
@@ -22,15 +22,15 @@ const rePasswordValid = (rule, value, callback) => {
 //用于注册的表单校验模型
 const registerDataRules = ref({
   username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 5, max: 16, message: '用户名的长度必须为5~16位', trigger: 'blur' }
+    {required: true, message: '请输入用户名', trigger: 'blur'},
+    {min: 5, max: 16, message: '用户名的长度必须为5~16位', trigger: 'blur'}
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 5, max: 16, message: '密码长度必须为5~16位', trigger: 'blur' }
+    {required: true, message: '请输入密码', trigger: 'blur'},
+    {min: 5, max: 16, message: '密码长度必须为5~16位', trigger: 'blur'}
   ],
   rePassword: [
-    { validator: rePasswordValid, trigger: 'blur' }
+    {validator: rePasswordValid, trigger: 'blur'}
   ]
 })
 //用于注册的事件函数
@@ -49,13 +49,15 @@ const register = () => {
           <h1>注册</h1>
         </el-form-item>
         <el-form-item>
-          <el-input :prefix-icon="User" placeholder="请输入用户名"></el-input>
+          <el-input :prefix-icon="User" v-model="registerData.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input :prefix-icon="Lock" type="password" placeholder="请输入密码"></el-input>
+          <el-input :prefix-icon="Lock" type="password" v-model="registerData.password"
+                    placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input :prefix-icon="Lock" type="password" placeholder="请输入再次密码"></el-input>
+          <el-input :prefix-icon="Lock" type="password" v-model="registerData.confirmPassword"
+                    placeholder="请输入再次密码"></el-input>
         </el-form-item>
         <!-- 注册按钮 -->
         <el-form-item>
@@ -107,7 +109,7 @@ const register = () => {
   background-color: #fff;
 
   .bg {
-    background: url('@/assets/login_bg.jpg') no-repeat center / cover;
+    background: url('@/assets/logo2.jpg') no-repeat center / cover;
     border-radius: 0 20px 20px 0;
   }
 
