@@ -17,7 +17,6 @@ const rePasswordValid = (rule, value, callback) => {
   if (value === null || value === '') {
     return callback(new Error('请再次确认密码'))
   } else if (registerData.value.password !== value) {
-    console.log(registerData.value.password,"~~~~~",registerData.value.confirmPassword, "~~~~~",value)
     return callback(new Error('两次输入密码不一致'))
   } else {
     callback()
@@ -46,6 +45,7 @@ const register = async () => {
   await fromRegister.value.validate()
   console.log('注册...');
   await registerApi(registerData.value)
+  registerData.value = {}
   isRegister.value = false
 }
 </script>
@@ -60,6 +60,7 @@ const register = async () => {
         <el-form-item>
           <h1>注册</h1>
         </el-form-item>
+        <!--要与registerData.userId的名称一致-->
         <el-form-item prop="userId">
           <el-input :prefix-icon="CreditCard" v-model="registerData.userId" placeholder="请输入学号"></el-input>
         </el-form-item>

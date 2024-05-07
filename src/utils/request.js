@@ -1,22 +1,21 @@
 import axios from "axios";
 import {useUserStore} from "@/stores"
-import {ElMessage} from "element-plus";
-import router from "@/router/router.js";
+import router from "@/router/router"
 
 
-export const warningMsg = (msg) => {
+const warningMsg = (msg) => {
     ElMessage({
         message: msg,
         type: 'warning',
     })
 }
-export const successMsg = (msg) => {
+const successMsg = (msg) => {
     ElMessage({
         message: msg,
         type: 'success',
     })
 }
-export const errorMsg = (msg) => {
+const errorMsg = (msg) => {
     ElMessage.error(msg)
 }
 
@@ -30,7 +29,7 @@ instance.defaults.timeout = 1000;
 instance.defaults.baseURL = baseURL;
 
 // 添加请求拦截器
-axios.interceptors.request.use(function (config) {
+instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     const userStore = useUserStore();
     if (userStore.token) {
@@ -43,7 +42,7 @@ axios.interceptors.request.use(function (config) {
 });
 
 // 添加响应拦截器
-axios.interceptors.response.use(function (response) {
+instance.interceptors.response.use(function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     if (response.data.code === 200) {
