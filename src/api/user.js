@@ -1,9 +1,16 @@
 import request from '@/utils/request'
 
-export function registerApi(query) {
+export function registerApi(e) {
     return request.post('/information/sysUser/createSysUser', {
-        name: query.name,
-        password: query.password,
-        userId: query.userId
+        name: e.name,
+        password: e.password,
+        userId: e.userId
+    })
+}
+
+export function loginApi(e) {
+    return request.post('/information/sysUser/login', {
+        userId: e.userId,
+        password: e.password
     })
 }

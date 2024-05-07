@@ -1,5 +1,5 @@
 import axios from "axios";
-import {useUserStore} from "@/stores"
+import {useUserTokenStore} from "@/stores"
 import router from "@/router/router"
 
 
@@ -31,7 +31,7 @@ instance.defaults.baseURL = baseURL;
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
-    const userStore = useUserStore();
+    const userStore = useUserTokenStore();
     if (userStore.token) {
         config.headers.Authorization = `Bearer ${userStore.token}`;
     }

@@ -3,7 +3,7 @@ import {ref} from "vue"
 
 // 用户模块token setToken removeToken
 
-export const useUserStore = defineStore('user', () => {
+export const useUserTokenStore = defineStore('token', () => {
     const token = ref('')
     const setToken = (newToken) => {
         token.value = newToken
@@ -17,3 +17,19 @@ export const useUserStore = defineStore('user', () => {
         removeToken
     }
 }, {persist: true})
+
+export const useUserIdStore = defineStore('userId', () => {
+    const userId = ref('')
+    const setUserId = (param) => {
+        userId.value = param
+    }
+    const removeUserId = () => {
+        userId.value = ''
+    }
+    return {
+        userId,
+        setUserId,
+        removeUserId
+    }
+}, {persist: true})
+
