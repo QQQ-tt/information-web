@@ -1,12 +1,14 @@
 <script setup>
-import {User, Lock} from '@element-plus/icons-vue'
+import {User, Lock, CreditCard} from '@element-plus/icons-vue'
 import {ref} from "vue";
+import {registerApi} from '@/api/user'
 
 // 控制注册与登录表单的显示，默认显示注册
 const isRegister = ref(false)
-
+const fromRegister = ref()
 const registerData = ref({
-  username: '',
+  name: '',
+  userId: '',
   password: '',
   confirmPassword: ''
 })
@@ -14,14 +16,20 @@ const registerData = ref({
 const rePasswordValid = (rule, value, callback) => {
   if (value === null || value === '') {
     return callback(new Error('请再次确认密码'))
-  }
-  if (registerData.value.password !== value) {
+  } else if (registerData.value.password !== value) {
+    console.log(registerData.value.password,"~~~~~",registerData.value.confirmPassword, "~~~~~",value)
     return callback(new Error('两次输入密码不一致'))
+  } else {
+    callback()
   }
 }
 //用于注册的表单校验模型
 const registerDataRules = ref({
-  username: [
+  userId: [
+    {required: true, message: '请输入学号', trigger: 'blur'},
+    {min: 10, max: 10, message: '学号的长度必须为10位', trigger: 'blur'}
+  ],
+  name: [
     {required: true, message: '请输入用户名', trigger: 'blur'},
     {min: 5, max: 16, message: '用户名的长度必须为5~16位', trigger: 'blur'}
   ],
@@ -29,13 +37,16 @@ const registerDataRules = ref({
     {required: true, message: '请输入密码', trigger: 'blur'},
     {min: 5, max: 16, message: '密码长度必须为5~16位', trigger: 'blur'}
   ],
-  rePassword: [
+  confirmPassword: [
     {validator: rePasswordValid, trigger: 'blur'}
   ]
 })
 //用于注册的事件函数
-const register = () => {
+const register = async () => {
+  await fromRegister.value.validate()
   console.log('注册...');
+  await registerApi(registerData.value)
+  isRegister.value = false
 }
 </script>
 
@@ -44,24 +55,28 @@ const register = () => {
     <el-col :span="12" class="bg"></el-col>
     <el-col :span="6" :offset="3" class="form">
       <!-- 注册表单 -->
-      <el-form ref="form" size="large" autocomplete="off" v-if="isRegister">
+      <el-form ref="fromRegister" size="large" autocomplete="off" v-if="isRegister" :rules="registerDataRules"
+               :model="registerData">
         <el-form-item>
           <h1>注册</h1>
         </el-form-item>
-        <el-form-item>
-          <el-input :prefix-icon="User" v-model="registerData.username" placeholder="请输入用户名"></el-input>
+        <el-form-item prop="userId">
+          <el-input :prefix-icon="CreditCard" v-model="registerData.userId" placeholder="请输入学号"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="name">
+          <el-input :prefix-icon="User" v-model="registerData.name" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
           <el-input :prefix-icon="Lock" type="password" v-model="registerData.password"
                     placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="confirmPassword">
           <el-input :prefix-icon="Lock" type="password" v-model="registerData.confirmPassword"
                     placeholder="请输入再次密码"></el-input>
         </el-form-item>
         <!-- 注册按钮 -->
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space>
+          <el-button @click="register" class="button" type="primary" auto-insert-space>
             注册
           </el-button>
         </el-form-item>
@@ -72,7 +87,7 @@ const register = () => {
         </el-form-item>
       </el-form>
       <!-- 登录表单 -->
-      <el-form ref="form" size="large" autocomplete="off" v-else>
+      <el-form ref="fromRegister" size="large" autocomplete="off" v-else>
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>

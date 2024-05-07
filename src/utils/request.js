@@ -4,24 +4,24 @@ import {ElMessage} from "element-plus";
 import router from "@/router/router.js";
 
 
-const warningMsg = (msg) => {
+export const warningMsg = (msg) => {
     ElMessage({
         message: msg,
         type: 'warning',
     })
 }
-const successMsg = (msg) => {
+export const successMsg = (msg) => {
     ElMessage({
         message: msg,
         type: 'success',
     })
 }
-const errorMsg = (msg) => {
+export const errorMsg = (msg) => {
     ElMessage.error(msg)
 }
 
 
-const baseURL = "http://localhost:9898";
+const baseURL = "http://120.55.165.76:9898";
 
 // 创建实例时配置默认值
 const instance = axios.create();
