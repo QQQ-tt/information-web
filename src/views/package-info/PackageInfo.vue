@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    用户管理
+    包信息
   </div>
 </template>
 

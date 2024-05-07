@@ -1,7 +1,7 @@
 import axios from "axios";
 import {useUserStore} from "@/stores"
 import {ElMessage} from "element-plus";
-import router from "@/router/index";
+import router from "@/router/router.js";
 
 
 const warningMsg = (msg) => {
@@ -62,7 +62,9 @@ axios.interceptors.response.use(function (response) {
         });
         return;
     }
-    errorMsg(error.response.data.msg || "请求失败")
+    if (error.response.status === 500) {
+        errorMsg(error.response.data.msg || "请求异常")
+    }
     return Promise.reject(error);
 });
 

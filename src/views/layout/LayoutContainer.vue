@@ -4,7 +4,8 @@
 
 <template>
   <div>
-    用户管理
+    布局架子
+    <router-view></router-view>
   </div>
 </template>
 
