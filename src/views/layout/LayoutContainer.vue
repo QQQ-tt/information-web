@@ -79,10 +79,6 @@ const handleClose = (key: string, keyPath: string[]) => {
 </template>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-}
 .layout-container {
   height: 100vh;
 }
