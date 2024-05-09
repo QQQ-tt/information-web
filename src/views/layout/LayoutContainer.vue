@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {ref} from 'vue'
-import {Document, Location, Menu as IconMenu, Setting,} from '@element-plus/icons-vue'
+import {Document, Location, Menu as IconMenu, Operation, Setting,} from '@element-plus/icons-vue'
 
 const isCollapse = ref(true)
 const handleOpen = (key: string, keyPath: string[]) => {
@@ -12,17 +12,20 @@ const handleClose = (key: string, keyPath: string[]) => {
 </script>
 
 <template>
-  <el-container>
-    <el-header>Header 布局架子</el-header>
+  <el-container class="layout-container">
+    <el-header class="el-header-new">
+      <div class="toggle-button">
+        Header 布局架子
+        <el-icon class="toggle-button" @click="isCollapse = !isCollapse" :width="isCollapse ? '64px':'200ox'">
+          <Operation/>
+        </el-icon>
+      </div>
+    </el-header>
     <el-container>
-      <el-aside width="200px">
-        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
-          <el-radio-button :value="false">expand</el-radio-button>
-          <el-radio-button :value="true">collapse</el-radio-button>
-        </el-radio-group>
+      <el-aside width="auto">
         <el-menu
             default-active="2"
-            class="el-menu-vertical-demo"
+            class="el-menu-vertical-demo el-menu-vertical-demo"
             :collapse="isCollapse"
             @open="handleOpen"
             @close="handleClose"
@@ -67,7 +70,7 @@ const handleClose = (key: string, keyPath: string[]) => {
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main>
+      <el-main style="padding: 0">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -76,8 +79,29 @@ const handleClose = (key: string, keyPath: string[]) => {
 </template>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+}
+.layout-container {
+  height: 100vh;
+}
+
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+}
+.el-menu-vertical-demo {
+  height: 100%;
+  background: #a1cc7d;
+}
+
+.el-header-new {
+  background-color: #B3C0D1;
+  color: #bb2626;
+  line-height: 60px;
+}
+.toggle-button {
+  transition: margin-right 1.5s ease;
 }
 </style>
