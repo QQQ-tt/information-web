@@ -13,13 +13,17 @@ import {
 import {useUserTokenStore, useUserIdStore} from '@/stores'
 import router from "@/router/router";
 
-const isCollapse = ref(true)
+const isCollapse = ref(false)
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
 const handleClose = (key, keyPath) => {
   console.log(key, keyPath)
 }
+const menuSelect = async (key, keyPath) => {
+  await router.push({name: key})
+}
+
 const signOutUser = async () => {
   const token = useUserTokenStore()
   token.removeToken()
@@ -33,7 +37,7 @@ const signOutUser = async () => {
   <el-container class="layout-container">
     <el-header class="el-header-new">
       Header 布局架子
-      <el-icon @click="isCollapse = !isCollapse" :width="isCollapse ? '64px':'200ox'">
+      <el-icon @click="isCollapse = !isCollapse">
         <Operation/>
       </el-icon>
       <el-dropdown placement="bottom-end" style="margin-left: auto">
@@ -61,6 +65,7 @@ const signOutUser = async () => {
             :collapse="isCollapse"
             @open="handleOpen"
             @close="handleClose"
+            @select="menuSelect"
         >
           <el-sub-menu index="1">
             <template #title>
@@ -94,28 +99,39 @@ const signOutUser = async () => {
             </el-icon>
             <template #title>Navigator Three</template>
           </el-menu-item>
-          <el-menu-item index="4">
-            <el-icon>
-              <setting/>
-            </el-icon>
-            <template #title>Navigator Four</template>
-          </el-menu-item>
+          <el-sub-menu index="4">
+            <template #title>
+              <el-icon>
+                <setting/>
+              </el-icon>
+              <span>系统设置</span>
+            </template>
+            <el-menu-item index="user">用户管理</el-menu-item>
+            <el-menu-item index="role">角色管理</el-menu-item>
+            <el-menu-item index="menu">菜单管理</el-menu-item>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
-      <el-main style="padding: 0">
-        <router-view></router-view>
-      </el-main>
+      <el-container>
+        <el-main style="padding: 0">
+          <router-view></router-view>
+        </el-main>
+        <el-footer style="padding: 0;display: flex;align-items: center;justify-content: center;">
+          信息管理 ©2024 Created by QQQtx
+        </el-footer>
+      </el-container>
     </el-container>
   </el-container>
-
 </template>
 
 <style>
 .layout-container {
   height: 100vh;
-  .el-dropdown__box{
+
+  .el-dropdown__box {
     display: flex;
     align-items: center;
+
     &:active,
     &:focus {
       outline: none;
