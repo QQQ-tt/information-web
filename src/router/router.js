@@ -11,6 +11,10 @@ const router = createRouter({
     routes: [
         {
             path: '/',
+            redirect: {name: 'login'}
+        },
+        {
+            path: '/login',
             name: 'login',
             component: () => import('@/views/Login.vue')
         },
@@ -18,8 +22,8 @@ const router = createRouter({
             path: '/sys',
             name: 'information',
             component: () => import('@/views/layout/LayoutContainer.vue'),
-            redirect : '/sys/user',
-            children : [
+            redirect: '/sys/user',
+            children: [
                 {
                     path: '/sys/user',
                     name: 'user',
