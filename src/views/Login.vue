@@ -151,7 +151,7 @@ const login = async () => {
   background-color: #fff;
 
   .bg {
-    background: url('@/assets/logo2.jpg') no-repeat center;
+    background: url('@/assets/logo2.jpeg') no-repeat center;
     background-size: cover;
     border-radius: 0 20px 20px 0;
   }
