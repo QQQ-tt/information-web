@@ -1,25 +1,57 @@
-<script lang="ts" setup>
+<script setup>
 import {ref} from 'vue'
-import {Document, Location, Menu as IconMenu, Operation, Setting,} from '@element-plus/icons-vue'
+import {
+  CaretBottom,
+  Crop,
+  Document, EditPen,
+  Location,
+  Menu as IconMenu,
+  Operation,
+  Setting, SwitchButton,
+  User,
+} from '@element-plus/icons-vue'
+import {useUserTokenStore, useUserIdStore} from '@/stores'
+import router from "@/router/router";
 
 const isCollapse = ref(true)
-const handleOpen = (key: string, keyPath: string[]) => {
+const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
-const handleClose = (key: string, keyPath: string[]) => {
+const handleClose = (key, keyPath) => {
   console.log(key, keyPath)
+}
+const signOutUser = async () => {
+  const token = useUserTokenStore()
+  token.removeToken()
+  const userId = useUserIdStore()
+  userId.removeUserId()
+  await router.push({name: 'login'})
 }
 </script>
 
 <template>
   <el-container class="layout-container">
     <el-header class="el-header-new">
-      <div class="toggle-button">
-        Header 布局架子
-        <el-icon class="toggle-button" @click="isCollapse = !isCollapse" :width="isCollapse ? '64px':'200ox'">
-          <Operation/>
-        </el-icon>
-      </div>
+      Header 布局架子
+      <el-icon @click="isCollapse = !isCollapse" :width="isCollapse ? '64px':'200ox'">
+        <Operation/>
+      </el-icon>
+      <el-dropdown placement="bottom-end" style="margin-left: auto">
+        <span class="el-dropdown__box">
+          <el-avatar :size="'default'"></el-avatar>
+          <el-icon class="el-icon--right">
+            <CaretBottom/>
+          </el-icon>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="profile" :icon="User">基本资料</el-dropdown-item>
+            <el-dropdown-item command="avatar" :icon="Crop">更换头像</el-dropdown-item>
+            <el-dropdown-item command="password" :icon="EditPen">重置密码</el-dropdown-item>
+            <el-dropdown-item command="logout" :icon="SwitchButton" @click="signOutUser">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </el-header>
     <el-container>
       <el-aside width="auto">
@@ -81,22 +113,34 @@ const handleClose = (key: string, keyPath: string[]) => {
 <style>
 .layout-container {
   height: 100vh;
+  .el-dropdown__box{
+    display: flex;
+    align-items: center;
+    &:active,
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
 }
+
 .el-menu-vertical-demo {
   height: 100%;
   background: #a1cc7d;
 }
 
 .el-header-new {
-  background-color: #B3C0D1;
-  color: #bb2626;
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  background-color: #9cbae6;
+  color: #d15c5c;
   line-height: 60px;
 }
+
 .toggle-button {
   transition: margin-right 1.5s ease;
 }
