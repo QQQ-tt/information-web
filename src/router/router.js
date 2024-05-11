@@ -50,20 +50,20 @@ const router = createRouter({
     ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
     // to: 要跳转到的路由对象
     // from: 从哪个路由对象跳转过来的
     // next: 放行函数
     // next()放行 next('/login')强制跳转
     const userToken = useUserTokenStore()
     if (to.path === '/login' || to.path === '/') {
-        next()
+        return true
     } else {
         const token = userToken.token
         if (!token) {
-            next('/login')
+            return { name: 'login'}
         } else {
-            next()
+            return true
         }
     }
 })
