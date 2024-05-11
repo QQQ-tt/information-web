@@ -113,7 +113,7 @@ const signOutUser = async () => {
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main style="padding: 0">
+        <el-main style="padding: 8px">
           <router-view></router-view>
         </el-main>
         <el-footer style="padding: 0;display: flex;align-items: center;justify-content: center;">
@@ -137,25 +137,26 @@ const signOutUser = async () => {
       outline: none;
     }
   }
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
+
+  .el-menu-vertical-demo {
+    height: 100%;
+    background: #a1cc7d;
+  }
+
+  .el-header-new {
+    display: flex;
+    align-items: center; /* 垂直居中对齐 */
+    background-color: #9cbae6;
+    color: #d15c5c;
+    line-height: 60px;
+  }
 }
 
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
-}
 
-.el-menu-vertical-demo {
-  height: 100%;
-  background: #a1cc7d;
-}
-
-.el-header-new {
-  display: flex;
-  align-items: center; /* 垂直居中对齐 */
-  background-color: #9cbae6;
-  color: #d15c5c;
-  line-height: 60px;
-}
 
 .toggle-button {
   transition: margin-right 1.5s ease;
