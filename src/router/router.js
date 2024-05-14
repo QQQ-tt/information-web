@@ -59,7 +59,7 @@ router.beforeEach((to, from) => {
     if (to.path === '/login' || to.path === '/') {
         return true
     } else {
-        const token = userToken.token
+        const token = userToken.info.token
         if (!token) {
             return { name: 'login'}
         } else {

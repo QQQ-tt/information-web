@@ -2,7 +2,7 @@
 import {User, Lock, CreditCard} from '@element-plus/icons-vue'
 import {ref} from "vue";
 import {registerApi, loginApi} from '@/api/user'
-import {useUserTokenStore, useUserIdStore} from '@/stores/index'
+import {useUserTokenStore} from '@/stores/index'
 import router from "@/router/router";
 
 // 控制注册与登录表单的显示，默认显示注册
@@ -61,9 +61,7 @@ const login = async () => {
   const result = await loginApi(registerData.value)
   if (result.data.code === 200) {
     const useUser = useUserTokenStore()
-    const useUserId = useUserIdStore()
-    useUser.setToken(result.data.data.token)
-    useUserId.setUserId(result.data.data.userId)
+    useUser.setToken(result.data.data.token,result.data.data.userId)
     registerData.value = {}
     await router.push({name: 'information'})
   }
