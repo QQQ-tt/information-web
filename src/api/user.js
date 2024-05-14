@@ -14,3 +14,7 @@ export function loginApi(e) {
         password: e.password
     })
 }
+
+export function getUserByUserId(e) {
+    return request.get('/information/sysUser/getUserByUserId', {params: {userId: e}})
+}

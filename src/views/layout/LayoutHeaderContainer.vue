@@ -1,14 +1,24 @@
 <script setup>
 import {CaretBottom, Crop, EditPen, Operation, SwitchButton, User} from "@element-plus/icons-vue";
-import {useUserIdStore, useUserTokenStore} from "@/stores/index.js";
+import {useUserStore, useUserTokenStore} from "@/stores/index.js";
 import router from "@/router/router.js";
 import {ref} from "vue";
 
+let userInfo = ref()
+
+const initUserInfo = () => {
+  console.log("init")
+  const user = useUserStore()
+  user.getUser()
+  userInfo.value = user.user
+  console.log(userInfo.value)
+}
+initUserInfo()
 const signOutUser = async () => {
   const token = useUserTokenStore()
   token.removeToken()
-  const userId = useUserIdStore()
-  userId.removeUserId()
+  const user = useUserStore()
+  user.removeUser()
   await router.push({name: 'login'})
 }
 const props = defineProps(["getCollapse"])
@@ -30,6 +40,7 @@ const change = () => {
   </el-icon>
   <el-dropdown placement="bottom-end" style="margin-left: auto">
         <span class="el-dropdown__box">
+          <span>{{ userInfo.name }}</span>
           <el-avatar :size="'default'"></el-avatar>
           <el-icon class="el-icon--right">
             <CaretBottom/>
@@ -47,5 +58,13 @@ const change = () => {
 </template>
 
 <style scoped lang="scss">
+.el-dropdown__box {
+  display: flex;
+  align-items: center;
 
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
 </style>
