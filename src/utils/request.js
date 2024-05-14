@@ -32,8 +32,9 @@ instance.defaults.baseURL = baseURL;
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     const userStore = useUserTokenStore();
-    if (userStore.token) {
-        config.headers.Authorization = `Bearer ${userStore.token}`;
+    if (userStore.info.token) {
+        config.headers.Authorization = `Bearer ${userStore.info.token}`;
+        config.headers.set('user', userStore.info.userId);
     }
     return config;
 }, function (error) {
