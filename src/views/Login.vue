@@ -61,7 +61,7 @@ const login = async () => {
   const result = await loginApi(registerData.value)
   if (result.data.code === 200) {
     const useUser = useUserTokenStore()
-    useUser.setToken(result.data.data.token,result.data.data.userId)
+    useUser.setToken(result.data.data.token, result.data.data.userId)
     registerData.value = {}
     await router.push({name: 'information'})
   }

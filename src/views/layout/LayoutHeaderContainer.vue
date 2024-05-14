@@ -7,13 +7,13 @@ import {ref} from "vue";
 let userInfo = ref()
 
 const initUserInfo = () => {
-  console.log("init")
   const user = useUserStore()
   user.getUser()
   userInfo.value = user.user
-  console.log(userInfo.value)
 }
+// 初始化用户信息
 initUserInfo()
+// 退出登录
 const signOutUser = async () => {
   const token = useUserTokenStore()
   token.removeToken()
@@ -40,7 +40,7 @@ const change = () => {
   </el-icon>
   <el-dropdown placement="bottom-end" style="margin-left: auto">
         <span class="el-dropdown__box">
-          <span>{{ userInfo.name }}</span>
+          <span class="my-span">{{ userInfo.name }}</span>
           <el-avatar :size="'default'"></el-avatar>
           <el-icon class="el-icon--right">
             <CaretBottom/>
@@ -61,6 +61,10 @@ const change = () => {
 .el-dropdown__box {
   display: flex;
   align-items: center;
+
+  .my-span {
+    padding-right: 10px;
+  }
 
   &:active,
   &:focus {

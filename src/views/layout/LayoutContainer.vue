@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from 'vue'
-import LayoutHeaderContainer from "@/views/layout/LayoutHeaderContainer.vue";import router from "@/router/router";
+import LayoutHeaderContainer from "@/views/layout/LayoutHeaderContainer.vue";
 import LayoutAsideContainer from "@/views/layout/LayoutAsideContainer.vue";
 
 const isCollapse = ref(false)
@@ -43,7 +43,6 @@ const getCollapse = (value) => {
     line-height: 60px;
   }
 }
-
 
 
 .toggle-button {

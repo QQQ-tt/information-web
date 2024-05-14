@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref,reactive} from "vue"
+import {ref, reactive} from "vue"
 import {getUserByUserId} from "@/api/user.js";
 
 // 用户模块token setToken removeToken
@@ -27,7 +27,7 @@ export const useUserStore = defineStore('user', () => {
     const user = ref('')
     const getUser = async () => {
         const userId = useUserTokenStore()
-        if (user.value === ''){
+        if (user.value === '') {
             const res = await getUserByUserId(userId.info.userId)
             if (res.data.code === 200) {
                 user.value = res.data.data
