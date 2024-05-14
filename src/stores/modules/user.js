@@ -1,35 +1,46 @@
 import {defineStore} from "pinia";
-import {ref} from "vue"
+import {ref,reactive} from "vue"
+import {getUserByUserId} from "@/api/user.js";
 
 // 用户模块token setToken removeToken
 
 export const useUserTokenStore = defineStore('token', () => {
-    const token = ref('')
-    const setToken = (newToken) => {
-        token.value = newToken
+    const info = reactive({
+        token: '', userId: ''
+    })
+    const setToken = (newToken, userId) => {
+        info.token = newToken
+        info.userId = userId
     }
     const removeToken = () => {
-        token.value = ''
+        info.token = ''
+        info.userId = ''
     }
     return {
-        token,
+        info,
         setToken,
         removeToken
     }
 }, {persist: true})
 
-export const useUserIdStore = defineStore('userId', () => {
-    const userId = ref('')
-    const setUserId = (param) => {
-        userId.value = param
+export const useUserStore = defineStore('user', () => {
+    const user = ref('')
+    const getUser = async () => {
+        const userId = useUserTokenStore()
+        if (user.value === ''){
+            const res = await getUserByUserId(userId.info.userId)
+            if (res.data.code === 200) {
+                user.value = res.data.data
+            }
+        }
     }
-    const removeUserId = () => {
-        userId.value = ''
+    const removeUser = () => {
+        user.value = ''
     }
     return {
-        userId,
-        setUserId,
-        removeUserId
+        user,
+        getUser,
+        removeUser
     }
 }, {persist: true})
 
