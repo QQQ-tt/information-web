@@ -149,8 +149,8 @@ const onSubmitFrom = () => {
                     style="width: 100%"
                 />
               </el-col>
-              <el-col :span="2" class="text-center">
-                <span class="text-gray-500">-</span>
+              <el-col :span="2" style="text-align: center">
+                <span class="text-gray-500" >-</span>
               </el-col>
               <el-col :span="11">
                 <el-time-picker
