@@ -65,6 +65,7 @@ defineProps(["isCollapse"])
       <el-menu-item index="user">用户管理</el-menu-item>
       <el-menu-item index="role">角色管理</el-menu-item>
       <el-menu-item index="menu">菜单管理</el-menu-item>
+      <el-menu-item index="ui">ui样式</el-menu-item>
     </el-sub-menu>
   </el-menu>
 </template>

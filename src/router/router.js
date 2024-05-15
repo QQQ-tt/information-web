@@ -41,6 +41,11 @@ const router = createRouter({
                     component: () => import('@/views/sys-user/UserMenu.vue')
                 },
                 {
+                    path: '/sys/ui',
+                    name: 'ui',
+                    component: () => import('@/views/sys-user/UiExample.vue')
+                },
+                {
                     path: '/package/info',
                     name: 'package-info',
                     component: () => import('@/views/package-info/PackageInfo.vue')

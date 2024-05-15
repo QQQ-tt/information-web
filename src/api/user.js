@@ -18,3 +18,12 @@ export function loginApi(e) {
 export function getUserByUserId(e) {
     return request.get('/information/sysUser/getUserByUserId', {params: {userId: e}})
 }
+
+export function listSysUserPage(e) {
+    return request.post('/information/sysUser/listSysUserPage', {
+        name: e.name,
+        userId: e.userId,
+        pageNum: e.pageNum,
+        pageSize: e.pageSize
+    })
+}
