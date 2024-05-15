@@ -5,7 +5,6 @@ import router from "@/router/router.js";
 import {ref} from "vue";
 
 let userInfo = ref()
-
 const initUserInfo = () => {
   const user = useUserStore()
   user.getUser()
@@ -21,6 +20,23 @@ const signOutUser = async () => {
   user.removeUser()
   await router.push({name: 'login'})
 }
+
+const commandsF = async (key) => {
+  if (key === 'logout') {
+    await ElMessageBox.confirm(
+        'proxy will permanently delete the file. Continue?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+    )
+    await signOutUser()
+  } else {
+    await router.push({name: key})
+  }
+}
 const props = defineProps(["getCollapse"])
 const isCollapse = ref(false)
 const change = () => {
@@ -30,7 +46,6 @@ const change = () => {
     props.getCollapse(isCollapse.value)
   }
 }
-
 </script>
 
 <template>
@@ -38,7 +53,7 @@ const change = () => {
   <el-icon @click="change">
     <Operation/>
   </el-icon>
-  <el-dropdown placement="bottom-end" style="margin-left: auto">
+  <el-dropdown placement="bottom-end" style="margin-left: auto" @command="commandsF">
         <span class="el-dropdown__box">
           <span class="my-span">{{ userInfo.name }}</span>
           <el-avatar :size="'default'"></el-avatar>
@@ -51,7 +66,7 @@ const change = () => {
         <el-dropdown-item command="profile" :icon="User">基本资料</el-dropdown-item>
         <el-dropdown-item command="avatar" :icon="Crop">更换头像</el-dropdown-item>
         <el-dropdown-item command="password" :icon="EditPen">重置密码</el-dropdown-item>
-        <el-dropdown-item command="logout" :icon="SwitchButton" @click="signOutUser">退出登录</el-dropdown-item>
+        <el-dropdown-item command="logout" :icon="SwitchButton">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
