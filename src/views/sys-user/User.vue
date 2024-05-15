@@ -206,30 +206,25 @@ const onSubmitFrom = () => {
 </template>
 
 <style scoped lang="scss">
-.demo-form-inline .el-input {
-  --el-input-width: 220px;
-}
-
-.demo-form-inline .el-select {
-  --el-select-width: 220px;
-}
-
 .demo-form-inline {
-  .form-centered {
-    display: flex;
-    align-items: center;
-  }
-
+  display: flex;
+  align-items: center;
   .el-form-item {
     display: flex;
     align-items: center;
     margin-bottom: 0;
   }
-
   .form-button {
     margin-left: auto;
     margin-right: 0;
   }
-}
 
+  .el-input {
+    --el-input-width: 220px;
+  }
+
+  .el-select {
+    --el-select-width: 220px;
+  }
+}
 </style>
