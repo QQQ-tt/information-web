@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import requestList from "@/utils/requestList";
 
 export function registerApi(e) {
     return request.post('/information/sysUser/createSysUser', {
@@ -20,7 +21,7 @@ export function getUserByUserId(e) {
 }
 
 export function listSysUserPage(e) {
-    return request.post('/information/sysUser/listSysUserPage', {
+    return requestList.post('/information/sysUser/listSysUserPage', {
         name: e.name,
         userId: e.userId,
         pageNum: e.pageNum,

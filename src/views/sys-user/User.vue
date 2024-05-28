@@ -1,39 +1,38 @@
 <script setup>
 import {reactive, ref} from 'vue'
 import {listSysUserPage} from '@/api/user'
+import Page from "@/components/page.vue";
 
 let formInline = reactive({
   name: '',
   userId: '',
-  pageSize: 10,
-  pageNum: 1,
+  pageSize: 0,
+  pageNum: 0,
   hospital: ''
 })
 
 let tableData = ref([])
 let total = ref(0)
 
-const listUser = async () => {
+const listUser = async (pageNum, pageSize) => {
+  formInline.pageNum = pageNum
+  formInline.pageSize = pageSize
   const result = await listSysUserPage(formInline)
   tableData.value = result.data.data.records
   total.value = result.data.data.total
 }
-const onSubmit = async () => {
-  console.log('submit!')
-  await listUser()
+const onQuery = async () => {
+  console.log('query!')
+  await listUser(1, 10)
 }
-onSubmit()
+onQuery()
 
-const small = ref(false)
-const background = ref(false)
-const disabled = ref(false)
-const handleSizeChange = (val) => {
-  console.log(val, 'items per page')
-  listUser()
+const handleClick = () => {
+
 }
-const handleCurrentChange = (val) => {
-  console.log('current page: ', val)
-  listUser()
+
+const deleteUser = () => {
+
 }
 
 const drawer = ref(false)
@@ -42,6 +41,7 @@ const direction = ref('rtl');
 function cancelClick() {
   drawer.value = false
 }
+
 function confirmClick() {
   ElMessageBox.confirm(`Are you confirm to chose ?`)
       .then(() => {
@@ -107,23 +107,11 @@ const onSubmitFrom = () => {
             Detail
           </el-button>
           <el-button link type="primary" size="small" @click="drawer = true">Edit</el-button>
-          <el-button link type="primary" size="small">Delete</el-button>
+          <el-button link type="primary" size="small" @click="deleteUser">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-        v-model:current-page="formInline.pageNum"
-        v-model:page-size="formInline.pageSize"
-        :page-sizes="[10, 20, 50, 100]"
-        :small="small"
-        :disabled="disabled"
-        :background="background"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        style="margin-top: 15px; justify-content: flex-end"
-    />
+    <page :list-page="listUser" :total="total"/>
     <el-drawer v-model="drawer" :direction="direction">
       <template #header>
         <h4>Edit User</h4>
@@ -132,12 +120,12 @@ const onSubmitFrom = () => {
         <div>
           <el-form :model="form" label-width="auto" style="max-width: 600px">
             <el-form-item label="Activity name">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name"/>
             </el-form-item>
             <el-form-item label="Activity zone">
               <el-select v-model="form.region" placeholder="please select your zone">
-                <el-option label="Zone one" value="shanghai" />
-                <el-option label="Zone two" value="beijing" />
+                <el-option label="Zone one" value="shanghai"/>
+                <el-option label="Zone two" value="beijing"/>
               </el-select>
             </el-form-item>
             <el-form-item label="Activity time">
@@ -150,7 +138,7 @@ const onSubmitFrom = () => {
                 />
               </el-col>
               <el-col :span="2" style="text-align: center">
-                <span class="text-gray-500" >-</span>
+                <span class="text-gray-500">-</span>
               </el-col>
               <el-col :span="11">
                 <el-time-picker
@@ -161,7 +149,7 @@ const onSubmitFrom = () => {
               </el-col>
             </el-form-item>
             <el-form-item label="Instant delivery">
-              <el-switch v-model="form.delivery" />
+              <el-switch v-model="form.delivery"/>
             </el-form-item>
             <el-form-item label="Activity type">
               <el-checkbox-group v-model="form.type">
@@ -186,7 +174,7 @@ const onSubmitFrom = () => {
               </el-radio-group>
             </el-form-item>
             <el-form-item label="Activity form">
-              <el-input v-model="form.desc" type="textarea" />
+              <el-input v-model="form.desc" type="textarea"/>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmitFrom">Create</el-button>
@@ -209,11 +197,13 @@ const onSubmitFrom = () => {
 .demo-form-inline {
   display: flex;
   align-items: center;
+
   .el-form-item {
     display: flex;
     align-items: center;
     margin-bottom: 0;
   }
+
   .form-button {
     margin-left: auto;
     margin-right: 0;
