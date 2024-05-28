@@ -31,8 +31,24 @@ const handleClick = () => {
 
 }
 
-const deleteUser = () => {
-
+const deleteUser = async row => {
+  await ElMessageBox.confirm(
+      'proxy will permanently delete the file. Continue?',
+      'Confirm the deletion',
+      {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }
+  ).then(() => {
+    console.log(row)
+    ElMessage({
+      type: 'success',
+      message: 'Delete Successfully',
+    })
+  }).catch(() => {
+    // catch error
+  })
 }
 
 const drawer = ref(false)
@@ -102,12 +118,12 @@ const onSubmitFrom = () => {
       <el-table-column prop="date" label="Date"/>
       <el-table-column prop="address" label="Address"/>
       <el-table-column fixed="right" label="Operations" width="180">
-        <template #default>
+        <template #default="scope">
           <el-button link type="primary" size="small" @click="handleClick">
             Detail
           </el-button>
           <el-button link type="primary" size="small" @click="drawer = true">Edit</el-button>
-          <el-button link type="primary" size="small" @click="deleteUser">Delete</el-button>
+          <el-button link type="primary" size="small" @click="deleteUser(scope.row)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
