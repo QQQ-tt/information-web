@@ -1,6 +1,6 @@
 <script setup>
 import {reactive, ref} from 'vue'
-import {listSysUserPage} from '@/api/user'
+import {listSysUserPage,deleteSysUser} from '@/api/user'
 import Page from "@/components/page.vue";
 
 let formInline = reactive({
@@ -27,6 +27,12 @@ const onQuery = async () => {
 }
 onQuery()
 
+const onRest = () => {
+  formInline.name = ''
+  formInline.userId = ''
+  formInline.hospital = ''
+}
+
 const handleClick = () => {
 
 }
@@ -40,12 +46,10 @@ const deleteUser = async row => {
         cancelButtonText: 'Cancel',
         type: 'warning',
       }
-  ).then(() => {
+  ).then(async () => {
     console.log(row)
-    ElMessage({
-      type: 'success',
-      message: 'Delete Successfully',
-    })
+    await deleteSysUser(row.id)
+    await onQuery()
   }).catch(() => {
     // catch error
   })
@@ -88,13 +92,13 @@ const onSubmitFrom = () => {
   <el-card style="width: auto;margin-bottom: 10px;" shadow="never"
            body-style="padding: 8px">
     <el-form :inline="true" :model="formInline" class="demo-form-inline form-centered">
-      <el-form-item label="用户">
+      <el-form-item label="Name">
         <el-input v-model="formInline.name" clearable/>
       </el-form-item>
-      <el-form-item label="用户id">
+      <el-form-item label="UserId">
         <el-input v-model="formInline.userId" clearable/>
       </el-form-item>
-      <el-form-item label="医院">
+      <el-form-item label="Hospital">
         <el-select
             v-model="formInline.hospital"
             placeholder="全部"
@@ -105,11 +109,14 @@ const onSubmitFrom = () => {
         </el-select>
       </el-form-item>
       <el-form-item class="form-button">
-        <el-button type="primary" @click="onSubmit">Query</el-button>
+        <el-button type="primary" @click="onQuery">Query</el-button>
+        <el-button @click="onRest">Rest</el-button>
       </el-form-item>
     </el-form>
   </el-card>
   <el-card style="width: auto;;margin-bottom: 10px; height: 90%;" shadow="never" body-style="padding: 8px;">
+    <el-button type="primary" @click="drawer = true" style="display: flex; margin-bottom: 10px;margin-left: auto">Add
+    </el-button>
     <el-table :data="tableData" border stripe style="width: 100%">
       <el-table-column prop="name" label="Name"/>
       <el-table-column prop="phone" label="phone"/>

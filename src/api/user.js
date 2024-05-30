@@ -28,3 +28,7 @@ export function listSysUserPage(e) {
         pageSize: e.pageSize
     })
 }
+
+export function deleteSysUser(e) {
+    return request.get('/information/sysUser/deleteSysUserById', {params: {id: e}})
+}
