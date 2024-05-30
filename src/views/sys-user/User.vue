@@ -107,6 +107,7 @@ function cancelClick() {
 function confirmClick() {
   ElMessageBox.confirm(`Are you confirm to chose ?`)
       .then(async () => {
+        fromRegister.value.validate()
         drawer.value = false
         await saveOrUpdateUser(form)
         await onQuery()
