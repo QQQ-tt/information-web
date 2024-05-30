@@ -40,7 +40,7 @@ const onRest = () => {
   formInline.hospital = ''
 }
 
-const handleClick = () => {
+const detail = () => {
 
 }
 
@@ -89,10 +89,6 @@ const form = reactive({
   sex: '',
   desc: '',
 })
-
-const onSubmitFrom = () => {
-  console.log('submit!')
-}
 </script>
 
 <template>
@@ -127,15 +123,20 @@ const onSubmitFrom = () => {
       <el-table-column prop="name" label="Name"/>
       <el-table-column prop="phone" label="phone"/>
       <el-table-column prop="userId" label="userId"/>
-      <el-table-column prop="status" label="status"/>
+      <el-table-column prop="status" label="status">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === true" type="success">开启</el-tag>
+          <el-tag v-else type="danger">Disable</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="date" label="Date"/>
       <el-table-column prop="address" label="Address"/>
       <el-table-column fixed="right" label="Operations" width="180">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="handleClick">
+          <el-button link type="primary" size="small" @click="detail">
             Detail
           </el-button>
-          <el-button link type="primary" size="small" @click="drawer = true">Edit</el-button>
+          <el-button link type="primary" size="small" @click="drawer = true;">Edit</el-button>
           <el-button link type="primary" size="small" @click="deleteUser(scope.row)">Delete</el-button>
         </template>
       </el-table-column>
