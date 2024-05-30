@@ -1,6 +1,6 @@
 <script setup>
 import {reactive, ref} from 'vue'
-import {listSysUserPage, deleteSysUser,getHospitalAll} from '@/api/user'
+import {listSysUserPage, deleteSysUser,getHospitalAll,saveOrUpdateUser} from '@/api/user'
 import Page from "@/components/page.vue";
 
 let formInline = reactive({
@@ -64,22 +64,9 @@ const deleteUser = async row => {
 
 const drawer = ref(false)
 const direction = ref('rtl');
-
-function cancelClick() {
-  drawer.value = false
-}
-
-function confirmClick() {
-  ElMessageBox.confirm(`Are you confirm to chose ?`)
-      .then(() => {
-        drawer.value = false
-      })
-      .catch(() => {
-        // catch error
-      })
-}
-
-const form = reactive({
+const fromRegister = ref()
+let form = reactive({
+  id: '',
   name: '',
   region: '',
   date1: '',
@@ -88,6 +75,75 @@ const form = reactive({
   type: [],
   sex: '',
   desc: '',
+  phone: '',
+  userId: '',
+  password: '',
+  confirmPassword:''
+})
+
+function closeDrawer() {
+  // fromRegister.value.validate()
+  fromRegister.value.resetFields()
+  form = reactive({
+    id: '',
+    name: '',
+    region: '',
+    date1: '',
+    date2: '',
+    status: false,
+    type: [],
+    sex: '',
+    desc: '',
+    phone: '',
+    userId: '',
+    password: '',
+    confirmPassword:''
+  })
+}
+function cancelClick() {
+  drawer.value = false
+}
+
+function confirmClick() {
+  ElMessageBox.confirm(`Are you confirm to chose ?`)
+      .then(async () => {
+        drawer.value = false
+        await saveOrUpdateUser(form)
+        await onQuery()
+      })
+      .catch(() => {
+        // catch error
+      })
+}
+
+//自定义确认密码的校验函数
+const rePasswordValid = (rule, value, callback) => {
+  if (value === null || value === '') {
+    return callback(new Error('请再次确认密码'))
+  } else if (form.password !== value) {
+    return callback(new Error('两次输入密码不一致'))
+  } else {
+    callback()
+  }
+}
+//用于注册的表单校验模型
+const registerDataRules = ref({
+  userId: [
+    {required: true, message: '请输入工号', trigger: 'blur'},
+    {min: 10, max: 10, message: '工号的长度必须为10位', trigger: 'blur'}
+  ],
+  name: [
+    {required: true, message: '请输入用户名', trigger: 'blur'},
+    {min: 5, max: 16, message: '用户名的长度必须为5~16位', trigger: 'blur'}
+  ],
+  password: [
+    {required: true, message: '请输入密码', trigger: 'blur'},
+    {min: 5, max: 16, message: '密码长度必须为5~16位', trigger: 'blur'}
+  ],
+  confirmPassword: [
+    {required: true, message: '请再次输入密码', trigger: 'blur'},
+    {validator: rePasswordValid, trigger: 'blur'}
+  ]
 })
 </script>
 
@@ -142,18 +198,27 @@ const form = reactive({
       </el-table-column>
     </el-table>
     <page :list-page="listUser" :total="total"/>
-    <el-drawer v-model="drawer" :direction="direction">
+    <el-drawer v-model="drawer" :direction="direction" @close="closeDrawer">
       <template #header>
         <h4>Edit User</h4>
       </template>
       <template #default>
         <div>
-          <el-form :model="form" label-width="auto" style="max-width: 600px">
-            <el-form-item label="Name">
+          <el-form ref="fromRegister" :model="form" label-width="auto" style="max-width: 600px" :rules="registerDataRules">
+            <el-form-item prop="name" label="Name">
               <el-input v-model="form.name"/>
             </el-form-item>
-            <el-form-item label="UserId">
+            <el-form-item prop="userId" label="UserId">
               <el-input v-model="form.userId"/>
+            </el-form-item>
+            <el-form-item label="Phone">
+              <el-input v-model="form.phone"/>
+            </el-form-item>
+            <el-form-item prop="password" label="Password">
+              <el-input type="password" v-model="form.password"/>
+            </el-form-item>
+            <el-form-item prop="confirmPassword" label="ConfirmPassword">
+              <el-input type="password" v-model="form.confirmPassword"/>
             </el-form-item>
             <el-form-item label="Activity zone">
               <el-select v-model="form.region" placeholder="please select your zone">

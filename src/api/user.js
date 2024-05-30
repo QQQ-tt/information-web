@@ -36,3 +36,15 @@ export function deleteSysUser(e) {
 export function getHospitalAll() {
     return requestList.get('/information/hospitalInfo/listAll')
 }
+
+export function saveOrUpdateUser(e) {
+    return request.post('/information/sysUser/saveOrUpdateSysUser', {
+        id: e.id,
+        name: e.name,
+        password: e.password,
+        userId: e.userId,
+        hospitalId: e.hospitalId,
+        role: e.role,
+        status: e.status
+    })
+}
