@@ -1,6 +1,6 @@
 <script setup>
 import {reactive, ref} from 'vue'
-import {listSysUserPage,deleteSysUser} from '@/api/user'
+import {listSysUserPage, deleteSysUser,getHospitalAll} from '@/api/user'
 import Page from "@/components/page.vue";
 
 let formInline = reactive({
@@ -10,6 +10,12 @@ let formInline = reactive({
   pageNum: 0,
   hospital: ''
 })
+
+let hospitalList = ref([])
+const listAllHospital = async () => {
+  const result = await getHospitalAll()
+  hospitalList.value = result.data.data
+}
 
 let tableData = ref([])
 let total = ref(0)
@@ -23,6 +29,7 @@ const listUser = async (pageNum, pageSize) => {
 }
 const onQuery = async () => {
   console.log('query!')
+  await listAllHospital()
   await listUser(1, 10)
 }
 onQuery()
@@ -77,9 +84,9 @@ const form = reactive({
   region: '',
   date1: '',
   date2: '',
-  delivery: false,
+  status: false,
   type: [],
-  resource: '',
+  sex: '',
   desc: '',
 })
 
@@ -101,11 +108,10 @@ const onSubmitFrom = () => {
       <el-form-item label="Hospital">
         <el-select
             v-model="formInline.hospital"
-            placeholder="全部"
+            placeholder="All"
             clearable
         >
-          <el-option label="Zone one" value="shanghai"/>
-          <el-option label="Zone two" value="beijing"/>
+          <el-option v-for="item in hospitalList" :key="item.id" :label="item.hospitalName" :value="item.hospitalName"/>
         </el-select>
       </el-form-item>
       <el-form-item class="form-button">
@@ -142,8 +148,11 @@ const onSubmitFrom = () => {
       <template #default>
         <div>
           <el-form :model="form" label-width="auto" style="max-width: 600px">
-            <el-form-item label="Activity name">
+            <el-form-item label="Name">
               <el-input v-model="form.name"/>
+            </el-form-item>
+            <el-form-item label="UserId">
+              <el-input v-model="form.userId"/>
             </el-form-item>
             <el-form-item label="Activity zone">
               <el-select v-model="form.region" placeholder="please select your zone">
@@ -171,9 +180,6 @@ const onSubmitFrom = () => {
                 />
               </el-col>
             </el-form-item>
-            <el-form-item label="Instant delivery">
-              <el-switch v-model="form.delivery"/>
-            </el-form-item>
             <el-form-item label="Activity type">
               <el-checkbox-group v-model="form.type">
                 <el-checkbox value="Online activities" name="type">
@@ -190,18 +196,17 @@ const onSubmitFrom = () => {
                 </el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="Resources">
-              <el-radio-group v-model="form.resource">
-                <el-radio value="Sponsor">Sponsor</el-radio>
-                <el-radio value="Venue">Venue</el-radio>
+            <el-form-item label="Sex">
+              <el-radio-group v-model="form.sex">
+                <el-radio value="1">man</el-radio>
+                <el-radio value="0">woman</el-radio>
               </el-radio-group>
+            </el-form-item>
+            <el-form-item label="User Status">
+              <el-switch v-model="form.status"/>
             </el-form-item>
             <el-form-item label="Activity form">
               <el-input v-model="form.desc" type="textarea"/>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmitFrom">Create</el-button>
-              <el-button>Cancel</el-button>
             </el-form-item>
           </el-form>
         </div>

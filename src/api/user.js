@@ -32,3 +32,7 @@ export function listSysUserPage(e) {
 export function deleteSysUser(e) {
     return request.get('/information/sysUser/deleteSysUserById', {params: {id: e}})
 }
+
+export function getHospitalAll() {
+    return requestList.get('/information/hospitalInfo/listAll')
+}

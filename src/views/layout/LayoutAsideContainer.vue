@@ -78,6 +78,6 @@ defineProps(["isCollapse"])
 
 .el-menu-vertical-demo {
   height: 100%;
-  background: #a1cc7d;
+  background: #8f8fda;
 }
 </style>
