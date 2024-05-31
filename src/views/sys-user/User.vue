@@ -186,15 +186,21 @@ const registerDataRules = ref({
     </el-button>
     <el-table :data="tableData" border stripe style="width: 100%">
       <el-table-column prop="name" label="Name"/>
-      <el-table-column prop="phone" label="phone"/>
-      <el-table-column prop="userId" label="userId"/>
-      <el-table-column prop="status" label="status">
+      <el-table-column prop="phone" label="Phone"/>
+      <el-table-column prop="userId" label="UserId"/>
+      <el-table-column label="Status">
         <template #default="scope">
           <el-tag v-if="scope.row.status === true" type="success">Enable</el-tag>
           <el-tag v-else type="danger">Disable</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="address" label="Address"/>
+      <el-table-column label="Hospital">
+        <template #default="scope">
+          <el-tag v-for="item in scope.row.listHospital" :key="item.hospitalId" type="info">
+            {{ item.hospitalName }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="createOn" label="Date"/>
       <el-table-column fixed="right" label="Operations" width="180">
         <template #default="scope">
