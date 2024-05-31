@@ -162,7 +162,7 @@ const registerDataRules = ref({
 <template>
   <el-card style="width: auto;margin-bottom: 5px;margin-top: 5px" shadow="never"
            body-style="padding: 8px">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline form-centered">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item label="Name">
         <el-input v-model="formInline.name" clearable/>
       </el-form-item>
@@ -180,7 +180,7 @@ const registerDataRules = ref({
       </el-form-item>
     </el-form>
   </el-card>
-  <el-card style="width: auto;;margin-bottom: 10px; height: 90%;" shadow="never" body-style="padding: 8px;">
+  <el-card style="width: auto;;margin-bottom: 10px; height: 85%;" shadow="never" body-style="padding: 8px;">
     <el-button type="primary" @click="drawer = true;addOrUpdate = true"
                style="display: flex; margin-bottom: 10px;margin-left: auto">Add
     </el-button>
@@ -213,95 +213,95 @@ const registerDataRules = ref({
         </template>
       </el-table-column>
     </el-table>
-    <page :list-page="listUser" :total="total"/>
-    <el-drawer v-model="drawer" :direction="direction" @close="closeDrawer">
-      <template #header>
-        <h4>Edit User</h4>
-      </template>
-      <template #default>
-        <div>
-          <el-form ref="fromRegister" :model="form" label-width="auto" style="max-width: 600px" :rules="registerDataRules">
-            <el-form-item prop="name" label="Name">
-              <el-input v-model="form.name"/>
-            </el-form-item>
-            <el-form-item prop="userId" label="UserId">
-              <el-input v-model="form.userId" :disabled="!addOrUpdate"/>
-            </el-form-item>
-            <el-form-item label="Phone">
-              <el-input v-model="form.phone"/>
-            </el-form-item>
-            <div v-if="addOrUpdate">
-              <el-form-item prop="password" label="Password">
-                <el-input type="password" v-model="form.password"/>
-              </el-form-item>
-              <el-form-item prop="confirmPassword" label="ConfirmPassword">
-                <el-input type="password" v-model="form.confirmPassword"/>
-              </el-form-item>
-            </div>
-            <el-form-item label="Hospital">
-              <el-select v-model="form.hospital" multiple collapse-tags clearable placeholder="please select your hospital">
-                <el-option v-for="item in hospitalList" :key="item.id" :label="item.hospitalName" :value="item.id"/>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Activity time">
-              <el-col :span="11">
-                <el-date-picker
-                    v-model="form.date1"
-                    type="date"
-                    placeholder="Pick a date"
-                    style="width: 100%"
-                />
-              </el-col>
-              <el-col :span="2" style="text-align: center">
-                <span class="text-gray-500">-</span>
-              </el-col>
-              <el-col :span="11">
-                <el-time-picker
-                    v-model="form.date2"
-                    placeholder="Pick a time"
-                    style="width: 100%"
-                />
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Activity type">
-              <el-checkbox-group v-model="form.type">
-                <el-checkbox value="Online activities" name="type">
-                  Online activities
-                </el-checkbox>
-                <el-checkbox value="Promotion activities" name="type">
-                  Promotion activities
-                </el-checkbox>
-                <el-checkbox value="Offline activities" name="type">
-                  Offline activities
-                </el-checkbox>
-                <el-checkbox value="Simple brand exposure" name="type">
-                  Simple brand exposure
-                </el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="Sex">
-              <el-radio-group v-model="form.sex">
-                <el-radio value="1">man</el-radio>
-                <el-radio value="0">woman</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="User Status">
-              <el-switch v-model="form.status"/>
-            </el-form-item>
-            <el-form-item label="Activity form">
-              <el-input v-model="form.desc" type="textarea"/>
-            </el-form-item>
-          </el-form>
-        </div>
-      </template>
-      <template #footer>
-        <div style="flex: auto">
-          <el-button @click="cancelClick">cancel</el-button>
-          <el-button type="primary" @click="confirmClick">confirm</el-button>
-        </div>
-      </template>
-    </el-drawer>
   </el-card>
+  <page :list-page="listUser" :total="total"/>
+  <el-drawer v-model="drawer" :direction="direction" @close="closeDrawer">
+    <template #header>
+      <h4>Edit User</h4>
+    </template>
+    <template #default>
+      <div>
+        <el-form ref="fromRegister" :model="form" label-width="auto" style="max-width: 600px" :rules="registerDataRules">
+          <el-form-item prop="name" label="Name">
+            <el-input v-model="form.name"/>
+          </el-form-item>
+          <el-form-item prop="userId" label="UserId">
+            <el-input v-model="form.userId" :disabled="!addOrUpdate"/>
+          </el-form-item>
+          <el-form-item label="Phone">
+            <el-input v-model="form.phone"/>
+          </el-form-item>
+          <div v-if="addOrUpdate">
+            <el-form-item prop="password" label="Password">
+              <el-input type="password" v-model="form.password"/>
+            </el-form-item>
+            <el-form-item prop="confirmPassword" label="ConfirmPassword">
+              <el-input type="password" v-model="form.confirmPassword"/>
+            </el-form-item>
+          </div>
+          <el-form-item label="Hospital">
+            <el-select v-model="form.hospital" multiple collapse-tags clearable placeholder="please select your hospital">
+              <el-option v-for="item in hospitalList" :key="item.id" :label="item.hospitalName" :value="item.id"/>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="Activity time">
+            <el-col :span="11">
+              <el-date-picker
+                  v-model="form.date1"
+                  type="date"
+                  placeholder="Pick a date"
+                  style="width: 100%"
+              />
+            </el-col>
+            <el-col :span="2" style="text-align: center">
+              <span class="text-gray-500">-</span>
+            </el-col>
+            <el-col :span="11">
+              <el-time-picker
+                  v-model="form.date2"
+                  placeholder="Pick a time"
+                  style="width: 100%"
+              />
+            </el-col>
+          </el-form-item>
+          <el-form-item label="Activity type">
+            <el-checkbox-group v-model="form.type">
+              <el-checkbox value="Online activities" name="type">
+                Online activities
+              </el-checkbox>
+              <el-checkbox value="Promotion activities" name="type">
+                Promotion activities
+              </el-checkbox>
+              <el-checkbox value="Offline activities" name="type">
+                Offline activities
+              </el-checkbox>
+              <el-checkbox value="Simple brand exposure" name="type">
+                Simple brand exposure
+              </el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="Sex">
+            <el-radio-group v-model="form.sex">
+              <el-radio value="1">man</el-radio>
+              <el-radio value="0">woman</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="User Status">
+            <el-switch v-model="form.status"/>
+          </el-form-item>
+          <el-form-item label="Activity form">
+            <el-input v-model="form.desc" type="textarea"/>
+          </el-form-item>
+        </el-form>
+      </div>
+    </template>
+    <template #footer>
+      <div style="flex: auto">
+        <el-button @click="cancelClick">cancel</el-button>
+        <el-button type="primary" @click="confirmClick">confirm</el-button>
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <style scoped lang="scss">
