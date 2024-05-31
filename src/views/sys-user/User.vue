@@ -29,9 +29,9 @@ const listUser = async (pageNum, pageSize) => {
 }
 const onQuery = async () => {
   console.log('query!')
-  await listAllHospital()
   await listUser(1, 10)
 }
+listAllHospital()
 onQuery()
 
 const onRest = () => {
@@ -64,6 +64,7 @@ const deleteUser = async row => {
 
 const drawer = ref(false)
 const direction = ref('rtl');
+const addOrUpdate = ref(true)
 const fromRegister = ref()
 let form = reactive({
   id: '',
@@ -100,6 +101,13 @@ function closeDrawer() {
     confirmPassword:''
   })
 }
+function setFormData(row) {
+  form.id = row.id
+  form.name = row.name
+  form.userId = row.userId
+  form.phone = row.phone
+  form.status = row.status
+}
 function cancelClick() {
   drawer.value = false
 }
@@ -111,6 +119,7 @@ function confirmClick() {
         drawer.value = false
         await saveOrUpdateUser(form)
         await onQuery()
+        fromRegister.value.resetFields()
       })
       .catch(() => {
         // catch error
@@ -149,7 +158,7 @@ const registerDataRules = ref({
 </script>
 
 <template>
-  <el-card style="width: auto;margin-bottom: 10px;" shadow="never"
+  <el-card style="width: auto;margin-bottom: 5px;margin-top: 5px" shadow="never"
            body-style="padding: 8px">
     <el-form :inline="true" :model="formInline" class="demo-form-inline form-centered">
       <el-form-item label="Name">
@@ -174,7 +183,8 @@ const registerDataRules = ref({
     </el-form>
   </el-card>
   <el-card style="width: auto;;margin-bottom: 10px; height: 90%;" shadow="never" body-style="padding: 8px;">
-    <el-button type="primary" @click="drawer = true" style="display: flex; margin-bottom: 10px;margin-left: auto">Add
+    <el-button type="primary" @click="drawer = true;addOrUpdate = true"
+               style="display: flex; margin-bottom: 10px;margin-left: auto">Add
     </el-button>
     <el-table :data="tableData" border stripe style="width: 100%">
       <el-table-column prop="name" label="Name"/>
@@ -186,14 +196,15 @@ const registerDataRules = ref({
           <el-tag v-else type="danger">Disable</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="date" label="Date"/>
       <el-table-column prop="address" label="Address"/>
+      <el-table-column prop="createOn" label="Date"/>
       <el-table-column fixed="right" label="Operations" width="180">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="detail">
             Detail
           </el-button>
-          <el-button link type="primary" size="small" @click="drawer = true;">Edit</el-button>
+          <el-button link type="primary" size="small" @click="drawer = true;addOrUpdate = false;setFormData(scope.row)">
+            Edit</el-button>
           <el-button link type="primary" size="small" @click="deleteUser(scope.row)">Delete</el-button>
         </template>
       </el-table-column>
@@ -215,12 +226,14 @@ const registerDataRules = ref({
             <el-form-item label="Phone">
               <el-input v-model="form.phone"/>
             </el-form-item>
-            <el-form-item prop="password" label="Password">
-              <el-input type="password" v-model="form.password"/>
-            </el-form-item>
-            <el-form-item prop="confirmPassword" label="ConfirmPassword">
-              <el-input type="password" v-model="form.confirmPassword"/>
-            </el-form-item>
+            <div v-if="addOrUpdate">
+              <el-form-item prop="password" label="Password">
+                <el-input type="password" v-model="form.password"/>
+              </el-form-item>
+              <el-form-item prop="confirmPassword" label="ConfirmPassword">
+                <el-input type="password" v-model="form.confirmPassword"/>
+              </el-form-item>
+            </div>
             <el-form-item label="Activity zone">
               <el-select v-model="form.region" placeholder="please select your zone">
                 <el-option label="Zone one" value="shanghai"/>

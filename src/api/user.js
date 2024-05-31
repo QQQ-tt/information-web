@@ -43,6 +43,7 @@ export function saveOrUpdateUser(e) {
         name: e.name,
         password: e.password,
         userId: e.userId,
+        phone: e.phone,
         hospitalId: e.hospitalId,
         role: e.role,
         status: e.status
