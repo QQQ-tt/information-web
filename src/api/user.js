@@ -25,7 +25,8 @@ export function listSysUserPage(e) {
         name: e.name,
         userId: e.userId,
         pageNum: e.pageNum,
-        pageSize: e.pageSize
+        pageSize: e.pageSize,
+        hospital: e.hospital,
     })
 }
 
@@ -44,7 +45,7 @@ export function saveOrUpdateUser(e) {
         password: e.password,
         userId: e.userId,
         phone: e.phone,
-        hospitalId: e.hospitalId,
+        hospital: e.hospital,
         role: e.role,
         status: e.status
     })

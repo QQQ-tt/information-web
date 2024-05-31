@@ -69,7 +69,7 @@ const fromRegister = ref()
 let form = reactive({
   id: '',
   name: '',
-  region: '',
+  hospital: [],
   date1: '',
   date2: '',
   status: false,
@@ -88,7 +88,7 @@ function closeDrawer() {
   form = reactive({
     id: '',
     name: '',
-    region: '',
+    hospital: [],
     date1: '',
     date2: '',
     status: false,
@@ -107,6 +107,7 @@ function setFormData(row) {
   form.userId = row.userId
   form.phone = row.phone
   form.status = row.status
+  form.hospital = row.listHospital.map(item => item.hospitalId)
 }
 function cancelClick() {
   drawer.value = false
@@ -123,6 +124,7 @@ function confirmClick() {
       })
       .catch(() => {
         // catch error
+        fromRegister.value.resetFields()
       })
 }
 
@@ -168,11 +170,7 @@ const registerDataRules = ref({
         <el-input v-model="formInline.userId" clearable/>
       </el-form-item>
       <el-form-item label="Hospital">
-        <el-select
-            v-model="formInline.hospital"
-            placeholder="All"
-            clearable
-        >
+        <el-select v-model="formInline.hospital" placeholder="All" clearable>
           <el-option v-for="item in hospitalList" :key="item.id" :label="item.hospitalName" :value="item.hospitalName"/>
         </el-select>
       </el-form-item>
@@ -192,7 +190,7 @@ const registerDataRules = ref({
       <el-table-column prop="userId" label="userId"/>
       <el-table-column prop="status" label="status">
         <template #default="scope">
-          <el-tag v-if="scope.row.status === true" type="success">开启</el-tag>
+          <el-tag v-if="scope.row.status === true" type="success">Enable</el-tag>
           <el-tag v-else type="danger">Disable</el-tag>
         </template>
       </el-table-column>
@@ -221,7 +219,7 @@ const registerDataRules = ref({
               <el-input v-model="form.name"/>
             </el-form-item>
             <el-form-item prop="userId" label="UserId">
-              <el-input v-model="form.userId"/>
+              <el-input v-model="form.userId" :disabled="!addOrUpdate"/>
             </el-form-item>
             <el-form-item label="Phone">
               <el-input v-model="form.phone"/>
@@ -234,10 +232,9 @@ const registerDataRules = ref({
                 <el-input type="password" v-model="form.confirmPassword"/>
               </el-form-item>
             </div>
-            <el-form-item label="Activity zone">
-              <el-select v-model="form.region" placeholder="please select your zone">
-                <el-option label="Zone one" value="shanghai"/>
-                <el-option label="Zone two" value="beijing"/>
+            <el-form-item label="Hospital">
+              <el-select v-model="form.hospital" multiple collapse-tags clearable placeholder="please select your hospital">
+                <el-option v-for="item in hospitalList" :key="item.id" :label="item.hospitalName" :value="item.id"/>
               </el-select>
             </el-form-item>
             <el-form-item label="Activity time">
