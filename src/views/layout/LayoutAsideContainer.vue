@@ -43,12 +43,16 @@ defineProps(["isCollapse"])
         <el-menu-item index="1-4-1">item one</el-menu-item>
       </el-sub-menu>
     </el-sub-menu>
-    <el-menu-item index="2">
-      <el-icon>
-        <icon-menu/>
-      </el-icon>
-      <template #title>Navigator Two</template>
-    </el-menu-item>
+    <el-sub-menu index="2">
+      <template #title>
+        <el-icon>
+          <icon-menu/>
+        </el-icon>
+        Navigator Two
+      </template>
+      <el-menu-item index="video">视频通话</el-menu-item>
+      <el-menu-item index="chat">聊天室</el-menu-item>
+    </el-sub-menu>
     <el-menu-item index="3" disabled>
       <el-icon>
         <document/>

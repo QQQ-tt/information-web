@@ -36,9 +36,6 @@ onQuery()
 function onRest() {
   formInline.roleName = ''
 }
-
-
-
 </script>
 
 <template>

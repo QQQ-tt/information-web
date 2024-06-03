@@ -14,7 +14,7 @@ const errorMsg = (msg) => {
 }
 
 
-const baseURL = "http://120.55.165.76:9898";
+const baseURL = 'http://' + __BACKEND_URL__;
 
 // 创建实例时配置默认值
 const instance = axios.create();

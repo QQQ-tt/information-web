@@ -20,6 +20,24 @@ const router = createRouter({
             component: () => import('@/views/Login.vue')
         },
         {
+            path: '/websocket',
+            name: 'websocket',
+            component: () => import('@/views/layout/LayoutContainer.vue'),
+            redirect: '/websocket/video',
+            children: [
+                {
+                    path: '/websocket/video',
+                    name: 'video',
+                    component: () => import('@/views/websocket/Video.vue')
+                },
+                {
+                    path: '/websocket/chat',
+                    name: 'chat',
+                    component: () => import('@/views/websocket/Chat.vue')
+                }
+            ]
+        },
+        {
             path: '/sys',
             name: 'information',
             component: () => import('@/views/layout/LayoutContainer.vue'),
@@ -66,7 +84,7 @@ router.beforeEach((to, from) => {
     } else {
         const token = userToken.info.token
         if (!token) {
-            return { name: 'login'}
+            return {name: 'login'}
         } else {
             return true
         }
