@@ -46,15 +46,21 @@ function WebSocketInit() {
 
   websocket.onmessage = (event) => {
     console.log(event.data);
+    let msg;
     switch (event.data) {
       case 'updateOnlineUser':
         onlineUserList()
         break
       default:
-        messageList.value.push(JSON.parse(event.data))
+        msg = JSON.parse(event.data)
+        messageList.value.push(msg)
         break
     }
-
+    //ReferenceError: h is not defined at WebSocketInit.websocket.onmessage
+    ElNotification({
+      title: 'Msg',
+      message: '来自：' + msg.fromUser + '的消息.'
+    })
   };
 }
 
@@ -126,7 +132,9 @@ const sendMessage = () => {
         </template>
         <el-card style="width: auto;height: 95%;margin-bottom: 8px">
           <div v-for="item in messageList" :key="item">
-            <span>{{ item.fromUser }}:{{ item.content }}</span>
+            <span v-show="item.fromUser === userInfo || item.toUser === userInfo">
+              {{ item.fromUser }}:{{ item.content }}
+            </span>
           </div>
         </el-card>
         <el-input
