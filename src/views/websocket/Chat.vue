@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted,reactive} from 'vue'
+import {ref, onMounted, reactive} from 'vue'
 import {useUserStore, useUserTokenStore} from '@/stores/index'
 import {getOnlineUserList} from '@/api/chat'
 
@@ -11,20 +11,22 @@ const initUserInfo = () => {
 }
 
 let onlineUser = ref([])
+
 async function onlineUserList() {
   onlineUser.value = (await getOnlineUserList()).data.data
-  console.log("1111111111",onlineUser)
 }
+
 onlineUserList()
 const toUser = ref('');
 const textarea = ref('')
+let messageList = ref([])
 let websocket = null;
 
 function WebSocketInit() {
   if ('WebSocket' in window) {
-/*    const userStore = useUserTokenStore();
-    const user = userStore.info.userId
-    const token = userStore.info.token*/
+    /*    const userStore = useUserTokenStore();
+        const user = userStore.info.userId
+        const token = userStore.info.token*/
     websocket = new WebSocket("ws://" + __BACKEND_URL__ + "/websocket/chat/" + userInfo);
   } else {
     console.error("当前浏览器不支持WebSocket！");
@@ -44,11 +46,18 @@ function WebSocketInit() {
 
   websocket.onmessage = (event) => {
     console.log(event.data);
-    if (event.data === 'updateOnlineUser'){
-      onlineUserList()
+    switch (event.data) {
+      case 'updateOnlineUser':
+        onlineUserList()
+        break
+      default:
+        messageList.value.push(JSON.parse(event.data))
+        break
     }
+
   };
 }
+
 onMounted(() => {
   // 初始化用户信息
   initUserInfo()
@@ -56,7 +65,8 @@ onMounted(() => {
 });
 let message = reactive({
   content: '',
-  toUser: ''
+  toUser: '',
+  fromUser: ''
 })
 
 const setToUser = (e) => {
@@ -67,7 +77,8 @@ const sendMessage = () => {
   if (websocket.readyState === WebSocket.OPEN) {
     message.content = textarea.value
     message.toUser = toUser.value
-
+    message.fromUser = userInfo
+    messageList.value.push(message)
     websocket.send(JSON.stringify(message));
     message = reactive({
       content: '',
@@ -114,6 +125,9 @@ const sendMessage = () => {
           </div>
         </template>
         <el-card style="width: auto;height: 95%;margin-bottom: 8px">
+          <div v-for="item in messageList" :key="item">
+            <span>{{ item.fromUser }}:{{ item.content }}</span>
+          </div>
         </el-card>
         <el-input
             v-model="textarea"
@@ -134,9 +148,11 @@ const sendMessage = () => {
 .el-row {
   margin-bottom: 20px;
 }
+
 .el-row:last-child {
   margin-bottom: 0;
 }
+
 .el-col {
   border-radius: 4px;
 }
@@ -145,6 +161,7 @@ const sendMessage = () => {
   border-radius: 4px;
   min-height: 36px;
 }
+
 .list-item {
   display: flex;
   align-items: center; /* 这将使子元素垂直居中 */

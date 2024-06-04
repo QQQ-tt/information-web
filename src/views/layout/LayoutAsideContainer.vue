@@ -1,7 +1,8 @@
 <script setup>
 import {Document, Location, Setting, Menu as IconMenu} from "@element-plus/icons-vue";
 import router from "@/router/router.js";
-
+import {ref} from 'vue'
+const show = ref(false)
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
@@ -50,7 +51,7 @@ defineProps(["isCollapse"])
         </el-icon>
         Navigator Two
       </template>
-      <el-menu-item index="video">视频通话</el-menu-item>
+      <el-menu-item v-show="show" index="video">视频通话</el-menu-item>
       <el-menu-item index="chat">聊天室</el-menu-item>
     </el-sub-menu>
     <el-menu-item index="3" disabled>
