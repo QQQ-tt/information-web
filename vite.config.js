@@ -9,7 +9,7 @@ import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 // 根据环境设置后端地址
 const backendUrl = process.env.NODE_ENV === 'production'
     ? '120.55.165.76:9898'
-    : '127.0.0.1:9899';
+    : '127.0.0.1:6880';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,5 +30,11 @@ export default defineConfig({
     define: {
         // 定义全局变量
         __BACKEND_URL__: JSON.stringify(backendUrl)
+    },
+    server: {
+        // 端口
+        port: 8084,
+        // 可以使用ip访问
+        host: '0.0.0.0'
     }
 })
