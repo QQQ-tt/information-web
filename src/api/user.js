@@ -16,6 +16,17 @@ export function loginApi(e) {
     })
 }
 
+export function loginLydApi(e) {
+    return request.post('/system/login/login', {
+        employeeName: e.userId,
+        password: e.password
+    })
+}
+
+export function exportExcel() {
+    return request.get('/information/sysUser/exportExcel', {responseType: 'blob'})
+}
+
 export function getUserByUserId(e) {
     return request.get('/information/sysUser/getUserByUserId', {params: {userId: e}})
 }

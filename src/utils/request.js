@@ -49,7 +49,7 @@ instance.interceptors.response.use(function (response) {
     if (response.data.code === 200) {
         successMsg(response.data.msg);
     }
-    if (response.data.code !== 200) {
+    if (response.data.code != null && response.data.code !== 200) {
         warningMsg(response.data.msg || "服务器异常");
     }
     return response;

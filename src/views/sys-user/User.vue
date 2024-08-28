@@ -1,6 +1,6 @@
 <script setup>
 import {reactive, ref} from 'vue'
-import {listSysUserPage, deleteSysUser,getHospitalAll,saveOrUpdateUser} from '@/api/user'
+import {listSysUserPage, deleteSysUser, getHospitalAll, saveOrUpdateUser, exportExcel} from '@/api/user'
 import Page from "@/components/page.vue";
 
 let formInline = reactive({
@@ -79,7 +79,7 @@ let form = reactive({
   phone: '',
   userId: '',
   password: '',
-  confirmPassword:''
+  confirmPassword: ''
 })
 
 function closeDrawer() {
@@ -98,9 +98,10 @@ function closeDrawer() {
     phone: '',
     userId: '',
     password: '',
-    confirmPassword:''
+    confirmPassword: ''
   })
 }
+
 function setFormData(row) {
   form.id = row.id
   form.name = row.name
@@ -109,6 +110,7 @@ function setFormData(row) {
   form.status = row.status
   form.hospital = row.listHospital.map(item => item.hospitalId)
 }
+
 function cancelClick() {
   drawer.value = false
 }
@@ -157,6 +159,19 @@ const registerDataRules = ref({
     {validator: rePasswordValid, trigger: 'blur'}
   ]
 })
+
+async function excel() {
+  const promise = await exportExcel();
+  const blob = new Blob([promise.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'your_file_name.xlsx';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
 </script>
 
 <template>
@@ -181,6 +196,9 @@ const registerDataRules = ref({
     </el-form>
   </el-card>
   <el-card style="width: auto;;margin-bottom: 10px; height: 85%;" shadow="never" body-style="padding: 8px;">
+    <el-button type="primary" @click="excel" style="display: flex; margin-bottom: 10px;margin-left: auto">
+      Export
+    </el-button>
     <el-button type="primary" @click="drawer = true;addOrUpdate = true"
                style="display: flex; margin-bottom: 10px;margin-left: auto">Add
     </el-button>
@@ -208,7 +226,8 @@ const registerDataRules = ref({
             Detail
           </el-button>
           <el-button link type="primary" size="small" @click="drawer = true;addOrUpdate = false;setFormData(scope.row)">
-            Edit</el-button>
+            Edit
+          </el-button>
           <el-button link type="primary" size="small" @click="deleteUser(scope.row)">Delete</el-button>
         </template>
       </el-table-column>
@@ -221,7 +240,8 @@ const registerDataRules = ref({
     </template>
     <template #default>
       <div>
-        <el-form ref="fromRegister" :model="form" label-width="auto" style="max-width: 600px" :rules="registerDataRules">
+        <el-form ref="fromRegister" :model="form" label-width="auto" style="max-width: 600px"
+                 :rules="registerDataRules">
           <el-form-item prop="name" label="Name">
             <el-input v-model="form.name"/>
           </el-form-item>
@@ -240,7 +260,8 @@ const registerDataRules = ref({
             </el-form-item>
           </div>
           <el-form-item label="Hospital">
-            <el-select v-model="form.hospital" multiple collapse-tags clearable placeholder="please select your hospital">
+            <el-select v-model="form.hospital" multiple collapse-tags clearable
+                       placeholder="please select your hospital">
               <el-option v-for="item in hospitalList" :key="item.id" :label="item.hospitalName" :value="item.id"/>
             </el-select>
           </el-form-item>

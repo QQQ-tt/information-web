@@ -1,7 +1,7 @@
 <script setup>
 import {User, Lock, CreditCard} from '@element-plus/icons-vue'
 import {ref} from "vue";
-import {registerApi, loginApi} from '@/api/user'
+import {registerApi, loginApi, loginLydApi} from '@/api/user'
 import {useUserStore, useUserTokenStore} from '@/stores/index'
 import router from "@/router/router";
 
@@ -66,6 +66,16 @@ const login = async () => {
     await user.getUser()
     registerData.value = {}
     await router.push({name: 'information'})
+  }
+  loading.value = false
+}
+
+// 登录
+const loginLyd = async () => {
+  console.log('登录...');
+  const result = await loginLydApi(registerData.value)
+  if (result.data.code === 200) {
+    console.log(result)
   }
   loading.value = false
 }
